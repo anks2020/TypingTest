@@ -13,7 +13,7 @@ class App extends Component {
       correctText:'',
       wordCompleted:false,
       errorStart:-1,
-      timer:20,
+      timer:120,
       wpm:'',
       seconds:'00',
       minutes:'00',
