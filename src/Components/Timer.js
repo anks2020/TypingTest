@@ -1,14 +1,13 @@
 import React from 'react';
 
-class Timer extends React.Component {
-    render() {
+function Timer(props){
      return (
       <div >
-       <h1 style={{ fontSize: 55, marginLeft:'3%', marginTop:'20px'}}>
-       {this.props.minutes} : {this.props.seconds}
+       <h1 style={{ fontSize: 55,  marginTop:'15px', color:props.color}}>
+       {props.minutes} : {props.seconds}
        </h1>
           </div>
         );
       }
-    }
+    
  export default Timer;
