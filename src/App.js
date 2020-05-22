@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 import './App.css';
 import axios from 'axios';
 import Timer from './Components/Timer';
+
+var zone = "black";
 class App extends Component {
   constructor(props)
   {
@@ -33,9 +35,12 @@ class App extends Component {
           })
           
           this.setState({referenceText:reftext.join(' ')});
-          setTimeout(this.setTimer,3000);
         })
       }
+
+  onStart = ()=>{
+    this.setTimer();
+  }
       keyUp =(value)=>{
         let todo=this.state.referenceText.substr(this.state.correctText.length);
         for (let i = 0; i < value.length; i++) {
@@ -65,13 +70,13 @@ class App extends Component {
           }
       raceOn =()=>{
             let todo = this.state.referenceText;
-            let newHTML = '<span class="correct">'
+            let newHTML = '<span class="correct"><mark style="background-color:orange; color:white">'
 
       if (this.state.typoIndex === -1) {
         if(this.state.wordCompleted)
         {
           newHTML += this.state.correctText;
-          newHTML += '</span>'
+          newHTML += '</mark></span>'
           newHTML += todo.substr(this.state.correctText.length)
         }
         else
@@ -153,9 +158,12 @@ class App extends Component {
             var secs = this.state.timer%60;
             var seconds= secs < 10? "0" + secs:secs;
             var timer= this.state.timer-1
-            this.setState({minutes:minutes, seconds:seconds, timer:timer})
+            this.setState({minutes:minutes, seconds:seconds, timer:timer},
+               ()=>{if(this.state.minutes==0 && this.state.seconds<=30)
+                zone = "red"
+              })
           }
-          setTimer =()=>{
+        setTimer =()=>{
             this.setState({disabled:false})
             this.intervalHandle = setInterval(this.timerStart, 1000)
           }
@@ -164,20 +172,26 @@ class App extends Component {
     <div className="App">
       <header className="App-header">
         <p>
-         TypeRacer
+          <b>
+            TypeRacer
+         </b>
         </p>
       
       </header>
       <div className="MainDiv">
+      <button className="button" 
+      disabled = {!this.state.disabled}
+      onClick = {()=>this.onStart()}
+      ><span>Start </span></button>
       {this.state.raceComplete? <h2>Your typing speed is: {this.state.wpm} wpm.</h2>:null}
-      <Timer minutes={this.state.minutes} seconds={this.state.seconds}/>
+      <Timer minutes={this.state.minutes} seconds={this.state.seconds} color={zone}/>
          <div id='referenceText'>{this.state.referenceText} </div>
         <input type="text" 
         id='typed'
-        style={{marginTop:'25px'}}
+        style={{marginTop:'25px', marginTop: '25px'}}
          value={this.state.typedText} 
          disabled={this.state.disabled}
-          onKeyup= {(e)=>this.keyUp(e.target.value)}
+          onKeyUp= {(e)=>this.keyUp(e.target.value)}
           onChange={(e)=>this.textChanged(e)}/>
        </div>
        
