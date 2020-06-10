@@ -178,11 +178,12 @@ class App extends Component {
         </p>
       
       </header>
-      <div className="MainDiv">
-      <button className="button" 
+      <div><button className="button" 
       disabled = {!this.state.disabled}
       onClick = {()=>this.onStart()}
-      ><span>Start </span></button>
+      ><span>Start </span></button></div>
+      <div className="MainDiv">
+      
       {this.state.raceComplete? <h2>Your typing speed is: {this.state.wpm} wpm.</h2>:null}
       <Timer minutes={this.state.minutes} seconds={this.state.seconds} color={zone}/>
          <div id='referenceText'>{this.state.referenceText} </div>
